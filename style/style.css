@@ -52,3 +52,39 @@ body {
   text-decoration: line-through;
   text-decoration-color: #f27511;
 }
+
+.model {
+  background-color: #f4f4f4;
+  padding: 1rem;
+  color: #333;
+  border: #333 solid 3px;
+  width: 25rem;
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  display: none;
+  z-index: 3;
+}
+.model__btn:hover {
+  background-color: #333;
+  color: #f4f4f4;
+}
+.model__title {
+  padding: 1rem 1rem;
+}
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+  display: none;
+}
+
+.model__open {
+  display: block;
+}
+.overlay__open {
+  display: block;
+}

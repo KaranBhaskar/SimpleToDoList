@@ -23,3 +23,27 @@ form.addEventListener("submit", (event) => {
     list.removeChild(string);
   });
 });
+
+// for overlay btn
+
+// selection element
+let openBtn = document.querySelector(".overlay__btn");
+let closeBtn = document.querySelector(".model__btn");
+let overlay = document.querySelector(".overlay");
+let model = document.querySelector(".model");
+
+// putting display to block on clicking overlay
+openBtn.addEventListener("click", () => {
+  model.classList.add("model__open");
+  overlay.classList.add("model__open");
+});
+
+// closing model when clicked on close btn and/ or overlay
+closeBtn.addEventListener("click", () => {
+  model.classList.remove("model__open");
+  overlay.classList.remove("model__open");
+});
+overlay.addEventListener("click", () => {
+  model.classList.remove("model__open");
+  overlay.classList.remove("model__open");
+});
