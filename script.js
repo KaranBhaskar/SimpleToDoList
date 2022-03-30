@@ -1,49 +1,69 @@
-// selecting elements
-const inputText = document.querySelector(".form__input");
 const form = document.querySelector(".form");
-const submitBtn = document.querySelector(".form__btn"); // didn't get used
+const input = document.querySelector(".form__input");
+const template = document.querySelector(".template");
 const list = document.querySelector(".list");
 
-// to watch for event on form for submission
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  // creating new element
-  const string = document.createElement("div");
-  // addding class to new element
-  string.classList.add("list__item");
-  // setting the innerText to input value
-  string.innerText = inputText.value;
-  // adding it to list
-  list.appendChild(string);
-  // setting back input value empty
-  inputText.value = "";
+const LOCAL_STORAGE_PREFIX = "ADVANCED_TODO";
+const LOCAL_STORAGE_KEY = `${LOCAL_STORAGE_PREFIX}-KEY`;
+let todos = JSON.parse(localStorage.getItem(`${LOCAL_STORAGE_KEY}`)) || [];
+console.log(todos);
+loadtodos(todos);
+// add item to list for display
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let obj = {
+    name: input.value,
+    checked: false,
+    id: new Date().valueOf().toString(),
+  };
+  todos.push(obj);
+  rendertodos(obj);
+  savetodos();
+  input.value = "";
+});
 
-  // setup for event listener to delete string on click
-  string.addEventListener("click", () => {
-    list.removeChild(string);
+function rendertodos(todo) {
+  const templateClone = template.content.cloneNode(true);
+  const text = templateClone.querySelector("[data-list__item-text]");
+  const checkbox = templateClone.querySelector("[data-list__item-checkbox]");
+  const listItem = templateClone.querySelector(".list__item");
+  text.innerText = todo.name;
+  listItem.dataset.id = todo.id;
+  checkbox.checked = todo.checked;
+  list.appendChild(templateClone);
+}
+// save data for load
+function savetodos() {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos));
+}
+
+// forload
+function loadtodos(todo) {
+  todo.forEach((todos) => {
+    rendertodos(todos);
   });
+}
+// checkbox
+// stores
+list.addEventListener("change", (e) => {
+  if (!e.target.matches(".template__input")) return;
+  // const input = e.target;
+  // const element = e.target.parentNode;
+  // const todo = Array.from(list.children).find((e) => e.contains(element));
+  const parent = e.target.closest(".list__item");
+  const todoId = parent.dataset.id;
+  const todo = todos.find((todo) => todo.id === todoId);
+  todo.checked = e.target.checked;
+  savetodos();
 });
+list.addEventListener("click", (e) => {
+  if (!e.target.matches("[data-list__item-delete]")) return;
+  const parent = e.target.closest(".list__item");
 
-// for overlay btn
-
-// selection element
-let openBtn = document.querySelector(".overlay__btn");
-let closeBtn = document.querySelector(".model__btn");
-let overlay = document.querySelector(".overlay");
-let model = document.querySelector(".model");
-
-// putting display to block on clicking overlay
-openBtn.addEventListener("click", () => {
-  model.classList.add("model__open");
-  overlay.classList.add("model__open");
+  const todoId = parent.dataset.id;
+  parent.remove();
+  todos = todos.filter((todo) => todo.id !== todoId);
+  savetodos();
 });
-
-// closing model when clicked on close btn and/ or overlay
-closeBtn.addEventListener("click", () => {
-  model.classList.remove("model__open");
-  overlay.classList.remove("model__open");
-});
-overlay.addEventListener("click", () => {
-  model.classList.remove("model__open");
-  overlay.classList.remove("model__open");
-});
+// be able to delete when click delete buttn
+// edit/delete data
