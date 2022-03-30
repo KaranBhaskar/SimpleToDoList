@@ -88,3 +88,20 @@ body {
 .overlay__open {
   display: block;
 }
+
+li {
+  list-style: none;
+}
+
+input[type="checkbox"]:checked + span {
+  /* visibility: hidden; */
+  text-decoration: line-through;
+  text-decoration-color: #f27511;
+}
+[data-list__item-delete] {
+  margin-right: 2rem;
+}
+
+input[type="checkbox"] {
+  visibility: hidden;
+}
